@@ -1,18 +1,16 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "buildCommand": "npm run start",
-  "outputDirectory": "dist",
-  "builds": [
+  "$schema": "https://vercel.sh",
+  "rewrites": [
     {
-      "src": "src/server.ts",
-      "use": "@vercel/node"
+      "source": "/(.*)",
+      "destination": "/src"
     }
   ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "dist/index.js"
+  "functions": {
+    "api/index.ts": {
+      "runtime": "nodejs20.x",
+      "memory": 1024,
+      "maxDuration": 15
     }
-  ]
+  }
 }
