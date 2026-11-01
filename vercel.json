@@ -1,4 +1,8 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "buildCommand": "npm run start",
+  "outputDirectory": "dist",
   "builds": [
     {
       "src": "src/server.ts",
