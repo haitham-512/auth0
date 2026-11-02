@@ -66,6 +66,8 @@
 }
 .passport > button:hover {
   background-color: #505050;
+}
+.passport > button:hover::before {
   color: #fbfbfb;
 }
 .passport > button:hover > svg {
