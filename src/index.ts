@@ -1,3 +1,4 @@
+import "dotenv/config";
 import path from "node:path";
 import express, { type Request, type Response } from "express";
 import passport from "passport";
@@ -8,6 +9,10 @@ import {
 import session from "express-session";
 import pug from "pug";
 import crypto from "crypto";
+import {
+  Strategy as GoogleStrategy,
+  type VerifyCallback as GoogleVerifyCallback,
+} from "passport-google-oauth20";
 
 const app = express();
 app.set("views", path.join(import.meta.dirname, "..", "views"));
@@ -28,23 +33,40 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+// passport.use(
+//   new OAuth2Strategy(
+//     {
+//       authorizationURL: "https://idp.sso.tools/oauth2666/oauth2/authorize",
+//       tokenURL: "https://idp.sso.tools/oauth2666/oauth2/token",
+//       clientID: "d77cc134-17cb-47a2-9522-bceb75500b00",
+//       clientSecret: "7WEARIQIIARUF8TGGDGNA743U4X9IY5Q",
+//       scope: ["profile", "email", "openid"],
+//       callbackURL: "https://auth0-pp-iota.vercel.app/login/sso/cb",
+//     },
+//     (
+//       accessToken: string,
+//       refreshToken: string,
+//       profile: any,
+//       verified: VerifyCallback,
+//     ) => {
+//       return verified(null, accessToken);
+//     },
+//   ),
+// );
 passport.use(
-  new OAuth2Strategy(
+  new GoogleStrategy(
     {
-      authorizationURL: "https://idp.sso.tools/oauth2666/oauth2/authorize",
-      tokenURL: "https://idp.sso.tools/oauth2666/oauth2/token",
-      clientID: "d77cc134-17cb-47a2-9522-bceb75500b00",
-      clientSecret: "7WEARIQIIARUF8TGGDGNA743U4X9IY5Q",
-      scope: ["profile", "email", "openid"],
+      clientID: process.env.GoogleClientID || "",
+      clientSecret: process.env.GoogleClientSecret || "",
       callbackURL: "https://auth0-pp-iota.vercel.app/login/sso/cb",
     },
     (
       accessToken: string,
       refreshToken: string,
       profile: any,
-      verified: VerifyCallback,
+      verified: GoogleVerifyCallback,
     ) => {
-      return verified(null, accessToken);
+      return verified(null, profile);
     },
   ),
 );
@@ -63,10 +85,13 @@ app.get("/login", (req: Request, res: Response) => {
   res.status(200).render("login/index");
 });
 
-app.get("/login/sso", passport.authenticate("oauth2"));
+app.get(
+  "/login/sso",
+  passport.authenticate("google", { scope: ["email", "profile"] }),
+);
 app.get(
   "/login/sso/cb",
-  passport.authenticate("oauth2", {
+  passport.authenticate("google", {
     failureRedirect: "/login/sso",
     failureFlash: true,
   }),
@@ -84,7 +109,7 @@ app.get(
     );
 
     const user = await response.json();
-    res.status(200).render("home/index", user);
+    res.status(200).render("home/index", req.user);
   },
 );
 
