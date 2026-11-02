@@ -1,7 +1,7 @@
 import path from "node:path";
 import express, { type Request, type Response } from "express";
 import passport from "passport";
-import { Strategy } from "passport-oauth2";
+import { Strategy as OAuthStrategy } from "passport-oauth2";
 import pug from "pug";
 
 const app = express();
@@ -9,6 +9,35 @@ app.set("views", path.join(import.meta.dirname, "..", "views"));
 app.set("view engine", "pug");
 app.engine("pug", pug.renderFile);
 app.use(express.static(path.join(import.meta.dirname, "..", "public")));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(
+  new OAuthStrategy(
+    {
+      authorizationURL: "https://idp.sso.tools/528-auth0/oauth2/authorize",
+      tokenURL: "https://idp.sso.tools/528-auth0/oauth2/token",
+      clientID: "c275bc33-4c4a-46db-9765-c70b83c2ed12",
+      clientSecret: "JJ8BYO1OMCE7OHG9FW1ARUIPT0XNMU9M",
+      scope: ["profile", "email", "openid"],
+      callbackURL: "https://auth0-pp-iota.vercel.app/login/sso/cb",
+    },
+    (
+      accessToken: string,
+      refreshToken: string,
+      profile: any,
+      verified: OAuth2Strategy.VerifyCallback,
+    ) => {
+      return verified(null, accessToken);
+    },
+  ),
+);
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
+
 app.get("/", (req: Request, res: Response) => {
   res.status(200).send("<h1>It's work!</h1>");
 });
@@ -16,6 +45,31 @@ app.get("/", (req: Request, res: Response) => {
 app.get("/login", (req: Request, res: Response) => {
   res.status(200).render("login/index");
 });
+
+app.get("/login/sso", passport.authenticate("oauth2"));
+app.get(
+  "/login/sso/cb",
+  passport.authenticate("oauth2", {
+    failureRedirect: "/login",
+    failureFlash: true,
+  }),
+  async (req: Request, res: Response) => {
+    const accessToken = req.user as string;
+    const response = await fetch(
+      "https://idp.sso.tools/528-auth0/api/users/me",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: "application/json",
+        },
+      },
+    );
+
+    const user = await response.json();
+    res.status(200).json(user);
+  },
+);
 
 app.listen(3000, (err) => {
   if (!err) {

@@ -41,7 +41,8 @@
   padding: 0.5rem 1rem;
 
 }
-.passport > button {
+.passport > a {
+  text-decoration: none;
   width: 100%;
   height: calc(64px + 1rem);
   display: flex;
@@ -53,7 +54,7 @@
   cursor: pointer;
 }
 
-.passport > button::before {
+.passport > a::before {
   content: "IDP SSO";
   font-size: 2.5rem;
   color: #505050;
@@ -74,20 +75,20 @@
 
 .btn > button:hover {
   background-color: #afc8ff;
-  color: #2b6dff;
+  color: #2d4475;
 }
 
-.passport > button > svg {
+.passport > a > svg {
   width: 64px;
   height: 64px;
   fill: #505050;
 }
-.passport > button:hover {
+.passport > a:hover {
   background-color: #505050;
 }
-.passport > button:hover::before {
+.passport > a:hover::before {
   color: #fbfbfb;
 }
-.passport > button:hover > svg {
+.passport > a:hover > svg {
   fill: #fbfbfb;
 }
