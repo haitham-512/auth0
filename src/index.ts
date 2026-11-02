@@ -31,10 +31,10 @@ app.use(passport.session());
 passport.use(
   new OAuth2Strategy(
     {
-      authorizationURL: "https://idp.sso.tools/528-auth0/oauth2/authorize",
-      tokenURL: "https://idp.sso.tools/528-auth0/oauth2/token",
-      clientID: "c275bc33-4c4a-46db-9765-c70b83c2ed12",
-      clientSecret: "JJ8BYO1OMCE7OHG9FW1ARUIPT0XNMU9M",
+      authorizationURL: "https://idp.sso.tools/oauth2666/oauth2/authorize",
+      tokenURL: "https://idp.sso.tools/oauth2666/oauth2/token",
+      clientID: "d77cc134-17cb-47a2-9522-bceb75500b00",
+      clientSecret: "7WEARIQIIARUF8TGGDGNA743U4X9IY5Q",
       scope: ["profile", "email", "openid"],
       callbackURL: "https://auth0-pp-iota.vercel.app/login/sso/cb",
     },
@@ -73,7 +73,7 @@ app.get(
   async (req: Request, res: Response) => {
     const accessToken = req.user as string;
     const response = await fetch(
-      "https://idp.sso.tools/528-auth0/api/users/me",
+      "https://idp.sso.tools/oauth2666/api/users/me",
       {
         method: "GET",
         headers: {
