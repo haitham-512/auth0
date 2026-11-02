@@ -1,11 +1,10 @@
-import "dotenv/config";
 import path from "node:path";
 import express, { type Request, type Response } from "express";
 import passport from "passport";
-import {
-  Strategy as OAuth2Strategy,
-  type VerifyCallback,
-} from "passport-oauth2";
+// import {
+//   Strategy as OAuth2Strategy,
+//   type VerifyCallback,
+// } from "passport-oauth2";
 import session from "express-session";
 import pug from "pug";
 import crypto from "crypto";
