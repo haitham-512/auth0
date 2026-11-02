@@ -1,16 +1,15 @@
 {
-  "$schema": "https://vercel.sh",
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/(.*)",
-      "destination": "/src"
+      "src": "index.js",
+      "use": "@vercel/node"
     }
   ],
-  "functions": {
-    "api/index.ts": {
-      "runtime": "nodejs20.x",
-      "memory": 1024,
-      "maxDuration": 15
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "index.js"
     }
-  }
+  ]
 }

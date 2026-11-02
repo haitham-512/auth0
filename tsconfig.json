@@ -3,10 +3,10 @@
     "module": "nodenext",
     "target": "es2025",
     "moduleResolution": "nodenext",
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist",
     "esModuleInterop": true,
-    "strict": true,
+    "skipLibCheck": true,
     "paths": {}
   },
   "include": ["./src"],

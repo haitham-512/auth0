@@ -12,3 +12,5 @@ app.listen(3000, (err) => {
     console.log("Server on port 3000");
   }
 });
+
+export default app;
