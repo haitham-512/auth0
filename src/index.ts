@@ -67,7 +67,7 @@ app.get("/login/sso", passport.authenticate("oauth2"));
 app.get(
   "/login/sso/cb",
   passport.authenticate("oauth2", {
-    failureRedirect: "/login",
+    failureRedirect: "/login/sso",
     failureFlash: true,
   }),
   async (req: Request, res: Response) => {
