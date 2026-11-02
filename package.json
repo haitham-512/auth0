@@ -12,6 +12,8 @@
     "pug": "^3.0.4"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0"
+    "@types/node": "^22.0.0",
+    "@types/passport": "^1.0.17",
+    "@types/passport-oauth2": "^1.8.0"
   }
 }
