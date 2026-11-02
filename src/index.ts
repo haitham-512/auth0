@@ -1,7 +1,10 @@
 import path from "node:path";
 import express, { type Request, type Response } from "express";
 import passport from "passport";
-import { Strategy as OAuthStrategy } from "passport-oauth2";
+import {
+  Strategy as OAuth2Strategy,
+  type VerifyCallback,
+} from "passport-oauth2";
 import pug from "pug";
 
 const app = express();
@@ -12,7 +15,7 @@ app.use(express.static(path.join(import.meta.dirname, "..", "public")));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(
-  new OAuthStrategy(
+  new OAuth2Strategy(
     {
       authorizationURL: "https://idp.sso.tools/528-auth0/oauth2/authorize",
       tokenURL: "https://idp.sso.tools/528-auth0/oauth2/token",
@@ -25,7 +28,7 @@ passport.use(
       accessToken: string,
       refreshToken: string,
       profile: any,
-      verified: OAuth2Strategy.VerifyCallback,
+      verified: VerifyCallback,
     ) => {
       return verified(null, accessToken);
     },
@@ -34,7 +37,7 @@ passport.use(
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
-passport.deserializeUser(function (user, done) {
+passport.deserializeUser(function (user: any, done) {
   done(null, user);
 });
 
