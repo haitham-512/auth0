@@ -5,13 +5,27 @@ import {
   Strategy as OAuth2Strategy,
   type VerifyCallback,
 } from "passport-oauth2";
+import session from "express-session";
 import pug from "pug";
+import crypto from "crypto";
 
 const app = express();
 app.set("views", path.join(import.meta.dirname, "..", "views"));
 app.set("view engine", "pug");
 app.engine("pug", pug.renderFile);
 app.use(express.static(path.join(import.meta.dirname, "..", "public")));
+app.use(
+  session({
+    secret: "23efcbad857fbfebc777e22dafb8842ed5f75ca17d21719d2b461562e03fe56f",
+    name: "session1",
+    cookie: {
+      httpOnly: true,
+      maxAge: Date.now() + 3600_000,
+      sameSite: "lax",
+      secure: true,
+    },
+  }),
+);
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(
