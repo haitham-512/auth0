@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  outline: 0;
 }
 .container {
   width: 80%;
@@ -9,10 +10,11 @@
 }
 .login {
   width: 30rem;
-  margin: auto;
+  margin: 1rem auto;
   padding: 1rem;
   border: 1px solid #505050;
-  box-shadow: 1px 1px 3px #d2cdcd;
+  box-shadow: 5px 5px 10px #939393;
+  border-radius: 1rem;
 }
 .passport {
   border: 1px solid #ff8847;
@@ -20,7 +22,7 @@
 .group {
   padding: 1rem 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
   flex-grow: 0;
   justify-content: left;
@@ -54,10 +56,13 @@
 }
 
 .passport > button > svg {
+  width: 64px;
+  height: 64px;
   fill: #505050;
 }
 .passport > button:hover {
   background-color: #505050;
+  color: #fbfbfb;
 }
 .passport > button:hover > svg {
   fill: #fbfbfb;
