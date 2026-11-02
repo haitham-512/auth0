@@ -56,8 +56,8 @@ app.use(passport.session());
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GoogleClientID || "",
-      clientSecret: process.env.GoogleClientSecret || "",
+      clientID: process.env.GoogleClientID!,
+      clientSecret: process.env.GoogleClientSecret!,
       callbackURL: "https://auth0-pp-iota.vercel.app/login/sso/cb",
     },
     (
