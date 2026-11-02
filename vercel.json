@@ -1,14 +1,7 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "src/index.ts",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": [
-          "views/**/*"
-        ]
-      }
+  "functions": {
+    "src/index.js": {
+      "includeFiles": "views/**"
     }
-  ]
+  }
 }
