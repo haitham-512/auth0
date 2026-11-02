@@ -84,7 +84,7 @@ app.get(
     );
 
     const user = await response.json();
-    res.status(200).json(user);
+    res.status(200).render("home/index", user);
   },
 );
 
