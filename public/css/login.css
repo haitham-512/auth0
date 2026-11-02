@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   outline: 0;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .container {
   width: 80%;
@@ -17,7 +18,8 @@
   border-radius: 1rem;
 }
 .passport {
-  border: 1px solid #ff8847;
+  border: 1px solid rgba(255, 157, 84, 0.4);
+  padding: 1rem;
 }
 .group {
   padding: 1rem 0;
@@ -33,6 +35,8 @@
   flex-basis: 30%;
 }
 .group > input {
+  border: 1px solid #939393;
+  border-radius: 0.25rem;
   flex-basis: 60%;
   padding: 0.5rem 1rem;
 
