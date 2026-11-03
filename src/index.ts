@@ -13,14 +13,25 @@ import crypto from "crypto";
 //   type VerifyCallback as GoogleVerifyCallback,
 // } from "passport-google-oauth20";
 import { Strategy as GithubStrategy } from "passport-github2";
+import { createClient } from "redis";
+import { RedisStore } from "connect-redis";
 
 const app = express();
 app.set("views", path.join(import.meta.dirname, "..", "views"));
 app.set("view engine", "pug");
 app.engine("pug", pug.renderFile);
 app.use(express.static(path.join(import.meta.dirname, "..", "public")));
+
+const redisClient = createClient({
+  url: "rediss://default:tyrnCpkD2178gzSYDMwlrGJq@oauthdb-icy-forge.sage.cloud.layerbase.dev:6379",
+});
+const store = new RedisStore({
+  client: redisClient,
+  prefix: "oauthapp",
+});
 app.use(
   session({
+    store,
     secret: "23efcbad857fbfebc777e22dafb8842ed5f75ca17d21719d2b461562e03fe56f",
     name: "session1",
     cookie: {
