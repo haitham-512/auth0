@@ -1,7 +1,7 @@
 import path from "node:path";
 import express, { type Request, type Response } from "express";
 import passport from "passport";
-import { RedisStore } from "connect-redis";
+import * as connectRedis from "connect-redis";
 import { createClient } from "redis";
 import session from "express-session";
 import pug from "pug";
@@ -21,6 +21,12 @@ app.set("views", path.join(import.meta.dirname, "..", "views"));
 app.set("view engine", "pug");
 app.engine("pug", pug.renderFile);
 app.use(express.static(path.join(import.meta.dirname, "..", "public")));
+
+const RedisStore =
+  (connectRedis as any).RedisStore ||
+  (connectRedis as any).default?.RedisStore ||
+  (connectRedis as any).default ||
+  connectRedis;
 
 const redisClient = createClient({
   url: "rediss://default:tyrnCpkD2178gzSYDMwlrGJq@oauthdb-icy-forge.sage.cloud.layerbase.dev:6379",
