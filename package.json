@@ -17,7 +17,8 @@
     "passport-github2": "^0.1.12",
     "redis": "^6.3.1",
     "connect-redis": "^10.0.0",
-    "openid-client": "^6.8.9"
+    "openid-client": "^6.8.9",
+    "passport-saml": "^3.2.4"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
@@ -29,6 +30,7 @@
     "@types/passport-google-oauth20": "^2.0.17",
     "@types/passport-github2": "^1.2.9",
     "@types/redis": "^4.0.11",
-    "@types/openid-client": "^3.7.0"
+    "@types/openid-client": "^3.7.0",
+    "@types/passport-saml": "^1.1.7"
   }
 }
