@@ -45,8 +45,8 @@ app.use(
       sameSite: "lax",
       secure: true,
     },
-    saveUninitialized: true,
-    resave: true,
+    saveUninitialized: false,
+    resave: false,
   }),
 );
 app.use(passport.initialize());
