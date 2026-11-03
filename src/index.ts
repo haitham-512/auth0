@@ -7,6 +7,7 @@ import session from "express-session";
 import pug from "pug";
 import crypto from "crypto";
 import { Strategy as GithubStrategy } from "passport-github2";
+import * as oidc from "openid-client";
 // import {
 //   Strategy as OAuth2Strategy,
 //   type VerifyCallback,
@@ -94,23 +95,23 @@ app.use(passport.session());
 //     },
 //   ),
 // );
-passport.use(
-  new GithubStrategy(
-    {
-      clientID: process.env.GithubClientID,
-      clientSecret: process.env.GithubSecret,
-      callbackURL: "https://auth0-pp-iota.vercel.app/login/sso/cb",
-    },
-    (
-      accessToken: string,
-      refreshToken: string,
-      profile: any,
-      verified: any,
-    ) => {
-      return verified(null, profile);
-    },
-  ),
-);
+// passport.use(
+//   new GithubStrategy(
+//     {
+//       clientID: process.env.GithubClientID,
+//       clientSecret: process.env.GithubSecret,
+//       callbackURL: "https://auth0-pp-iota.vercel.app/login/sso/cb",
+//     },
+//     (
+//       accessToken: string,
+//       refreshToken: string,
+//       profile: any,
+//       verified: any,
+//     ) => {
+//       return verified(null, profile);
+//     },
+//   ),
+// );
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -118,6 +119,14 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user: any, done) {
   done(null, user);
 });
+
+const issuer = await oidc.discovery(
+  new URL("https:google.com"),
+  process.env.GoogleClientID!,
+  process.env.GoogleClientSecret!,
+);
+
+console.log(issuer);
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).send("<h1>It's work!</h1>");
