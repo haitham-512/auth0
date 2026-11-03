@@ -129,11 +129,11 @@ app.get("/login", (req: Request, res: Response) => {
 
 app.get(
   "/login/sso",
-  passport.authenticate("google", { scope: ["email", "profile"] }),
+  passport.authenticate("github", { scope: ["email", "profile"] }),
 );
 app.get(
   "/login/sso/cb",
-  passport.authenticate("google", {
+  passport.authenticate("github", {
     failureRedirect: "/login/sso",
     failureFlash: true,
   }),
