@@ -1,20 +1,20 @@
 import path from "node:path";
 import express, { type Request, type Response } from "express";
 import passport from "passport";
+import { RedisStore } from "connect-redis";
+import { createClient } from "redis";
+import session from "express-session";
+import pug from "pug";
+import crypto from "crypto";
+import { Strategy as GithubStrategy } from "passport-github2";
 // import {
 //   Strategy as OAuth2Strategy,
 //   type VerifyCallback,
 // } from "passport-oauth2";
-import session from "express-session";
-import pug from "pug";
-import crypto from "crypto";
 // import {
 //   Strategy as GoogleStrategy,
 //   type VerifyCallback as GoogleVerifyCallback,
 // } from "passport-google-oauth20";
-import { Strategy as GithubStrategy } from "passport-github2";
-import { createClient } from "redis";
-import { RedisStore } from "connect-redis";
 
 const app = express();
 app.set("views", path.join(import.meta.dirname, "..", "views"));
