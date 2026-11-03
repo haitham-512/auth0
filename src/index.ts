@@ -121,7 +121,7 @@ passport.deserializeUser(function (user: any, done) {
 });
 
 const issuer = await oidc.discovery(
-  new URL("https://accounts.google.com"),
+  new URL("https://google.com"),
   process.env.GoogleClientID!,
   process.env.GoogleClientSecret!,
 );
