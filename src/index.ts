@@ -151,6 +151,7 @@ app.get(
     // );
 
     // const user = await response.json();
+    console.log(req.user);
     res.status(200).render("home/index", req.user);
   },
 );
