@@ -24,6 +24,10 @@ app.use(express.static(path.join(import.meta.dirname, "..", "public")));
 
 const redisClient = createClient({
   url: "rediss://default:tyrnCpkD2178gzSYDMwlrGJq@oauthdb-icy-forge.sage.cloud.layerbase.dev:6379",
+  socket: {
+    tls: true,
+    servername: "oauthdb-icy-forge.sage.cloud.layerbase.dev", // <-- Add this line
+  },
 });
 await redisClient.connect();
 const store = new RedisStore({
