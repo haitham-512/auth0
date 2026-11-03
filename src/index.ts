@@ -8,6 +8,7 @@ import pug from "pug";
 import crypto from "crypto";
 import { Strategy as GithubStrategy } from "passport-github2";
 import * as oidc from "openid-client";
+import { Strategy as SAMLStrategy } from "passport-saml";
 // import {
 //   Strategy as OAuth2Strategy,
 //   type VerifyCallback,
@@ -17,12 +18,14 @@ import * as oidc from "openid-client";
 //   type VerifyCallback as GoogleVerifyCallback,
 // } from "passport-google-oauth20";
 
+/************ Express *************/
 const app = express();
 app.set("views", path.join(import.meta.dirname, "..", "views"));
 app.set("view engine", "pug");
 app.engine("pug", pug.renderFile);
 app.use(express.static(path.join(import.meta.dirname, "..", "public")));
 
+/**************** Redis ****************/
 const RedisStore =
   (connectRedis as any).RedisStore ||
   (connectRedis as any).default?.RedisStore ||
@@ -56,8 +59,11 @@ app.use(
     resave: false,
   }),
 );
+
+/**************** Passport ****************/
 app.use(passport.initialize());
 app.use(passport.session());
+
 // passport.use(
 //   new OAuth2Strategy(
 //     {
@@ -113,6 +119,38 @@ app.use(passport.session());
 //   ),
 // );
 
+passport.use(
+  new SAMLStrategy(
+    {
+      entryPoint: "https://idp.sso.tools/samlpro1258/saml/login/request",
+      callbackUrl: "/login/sso/cb",
+      issuer: "passport-saml",
+      logoutUrl: "https://idp.sso.tools/samlpro1258/saml/logout/request",
+      cert: `-----BEGIN CERTIFICATE-----
+MIIC/DCCAeSgAwIBAgIULf+7cqxFtfuyZRTkKbEMX/28MrIwDQYJKoZIhvcNAQEL
+BQAwODELMAkGA1UEBhMCR0IxEjAQBgNVBAoMCVNTTyBUb29sczEVMBMGA1UECwwM
+U0FNTCBQcm9qZWN0MB4XDTI2MTEwMzIzMjYxNVoXDTQ2MTAyOTIzMjYxNVowODEL
+MAkGA1UEBhMCR0IxEjAQBgNVBAoMCVNTTyBUb29sczEVMBMGA1UECwwMU0FNTCBQ
+cm9qZWN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu7ZiRt7G2m6k
+13vbCpJJXWcSRlPhtDtRGyTG4W2MSk5/OyS4bUUzJZ9SefxiaPGDHp8M4/11+3Ro
+u3dCxiOQTfBE7uh3GEigYJA5Zlj55D631pVdk21a7Y1Zp9q5KnyOJ4IJeXxHBV1d
+utNtYl8GYBr8V8TVTicIOi9jZb2q9AwnIZ0/dSB7BC3MbcngVmbRWX4AKFPJ9j7s
+HVfz1zMnMExaWgHwQR8Ucmh1T3MKp6Eooi/iqZyHUkXTeWhE+RN3KtiTL+ATAFWb
+8JPJhHWNF8b11xPpDGdSJaSxgs640od+nswMsb/O4XOBkfSjrMbAPP3l6bffAmts
+pgUtbBjMjQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQAkYsw+cpcpvm8RAhPweBcR
+rtGk7OWu6XECiCYHhQdAIPFX8mKZT4YAp23sekg+IjHw+yzSXFJUtAQIqalWf1mz
+FZiKqrGzkus0GrDSYEW/LBggP7RnMvUXWg/ONjRY9EZU4mbLLCaMgHBN1/cgp7bz
+Q1EJFbKAlKZRtVU81UjmE04INGGHdP22FCF0wg/HiPUHzVDj6hils9BfkuFgnB03
+dLaAA54TZyPxKzW+wqn404/NP9XBx+1HWOq9Jh68Eo36CX2r+n+dbOEEvBx2euOV
+kDDZn8MY152JAhdry/hRmp+fzli80xoaOG7twTG9+4wVun3OAQyBdzyKcM1UFA2w
+-----END CERTIFICATE-----`,
+    },
+    (profile: any, verified: any) => {
+      verified(null, profile);
+    },
+  ),
+);
+
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
@@ -120,14 +158,7 @@ passport.deserializeUser(function (user: any, done) {
   done(null, user);
 });
 
-const issuer = await oidc.discovery(
-  new URL("https://google.com"),
-  process.env.GoogleClientID!,
-  process.env.GoogleClientSecret!,
-);
-
-console.log(issuer);
-
+/**************** App ****************/
 app.get("/", (req: Request, res: Response) => {
   res.status(200).send("<h1>It's work!</h1>");
 });
@@ -138,11 +169,11 @@ app.get("/login", (req: Request, res: Response) => {
 
 app.get(
   "/login/sso",
-  passport.authenticate("github", { scope: ["email", "profile"] }),
+  passport.authenticate("saml", { scope: ["email", "profile"] }),
 );
-app.get(
+app.post(
   "/login/sso/cb",
-  passport.authenticate("github", {
+  passport.authenticate("saml", {
     failureRedirect: "/login/sso",
     failureFlash: true,
   }),
