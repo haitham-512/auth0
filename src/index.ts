@@ -8,10 +8,11 @@ import passport from "passport";
 import session from "express-session";
 import pug from "pug";
 import crypto from "crypto";
-import {
-  Strategy as GoogleStrategy,
-  type VerifyCallback as GoogleVerifyCallback,
-} from "passport-google-oauth20";
+// import {
+//   Strategy as GoogleStrategy,
+//   type VerifyCallback as GoogleVerifyCallback,
+// } from "passport-google-oauth20";
+import { Strategy as GithubStrategy } from "passport-github2";
 
 const app = express();
 app.set("views", path.join(import.meta.dirname, "..", "views"));
@@ -52,23 +53,41 @@ app.use(passport.session());
 //     },
 //   ),
 // );
+// passport.use(
+//   new GoogleStrategy(
+//     {
+//       clientID: process.env.GoogleClientID!,
+//       clientSecret: process.env.GoogleClientSecret!,
+//       callbackURL: "https://auth0-pp-iota.vercel.app/login/sso/cb",
+//     },
+//     (
+//       accessToken: string,
+//       refreshToken: string,
+//       profile: any,
+//       verified: GoogleVerifyCallback,
+//     ) => {
+//       return verified(null, profile);
+//     },
+//   ),
+// );
 passport.use(
-  new GoogleStrategy(
+  new GithubStrategy(
     {
-      clientID: process.env.GoogleClientID!,
-      clientSecret: process.env.GoogleClientSecret!,
+      clientID: process.env.GithubClientID,
+      clientSecret: process.env.GithubSecret,
       callbackURL: "https://auth0-pp-iota.vercel.app/login/sso/cb",
     },
     (
       accessToken: string,
       refreshToken: string,
       profile: any,
-      verified: GoogleVerifyCallback,
+      verified: any,
     ) => {
       return verified(null, profile);
     },
   ),
 );
+
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
@@ -95,19 +114,19 @@ app.get(
     failureFlash: true,
   }),
   async (req: Request, res: Response) => {
-    const accessToken = req.user as string;
-    const response = await fetch(
-      "https://idp.sso.tools/oauth2666/api/users/me",
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          Accept: "application/json",
-        },
-      },
-    );
+    // const accessToken = req.user as string;
+    // const response = await fetch(
+    //   "https://idp.sso.tools/oauth2666/api/users/me",
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //       Accept: "application/json",
+    //     },
+    //   },
+    // );
 
-    const user = await response.json();
+    // const user = await response.json();
     res.status(200).render("home/index", req.user);
   },
 );
