@@ -32,7 +32,7 @@ const redisClient = createClient({
 await redisClient.connect();
 const store = new RedisStore({
   client: redisClient,
-  prefix: "oauthapp",
+  prefix: "oauthapp:",
 });
 app.use(
   session({
