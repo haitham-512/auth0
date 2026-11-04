@@ -190,6 +190,7 @@ app.post(
 app.get("/metadata", (req, res) => {
   const metadata = strategy.generateServiceProviderMetadata(null, null);
   res.type("application/xml");
+  console.log("metadata:\n", metadata);
   res.status(200).send(metadata);
 });
 
