@@ -164,7 +164,7 @@ app.get(
 app.post(
   "/login/sso/cb",
   passport.authenticate("saml", {
-    failureRedirect: "/login/sso",
+    failureRedirect: "/login",
     failureFlash: true,
   }),
   async (req: Request, res: Response) => {
