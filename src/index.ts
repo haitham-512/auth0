@@ -20,6 +20,8 @@ import { Strategy as SAMLStrategy } from "passport-saml";
 
 /************ Express *************/
 const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.set("views", path.join(import.meta.dirname, "..", "views"));
 app.set("view engine", "pug");
 app.engine("pug", pug.renderFile);
