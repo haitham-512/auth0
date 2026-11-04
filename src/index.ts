@@ -119,19 +119,18 @@ app.use(passport.session());
 //   ),
 // );
 
-passport.use(
-  new SAMLStrategy(
-    {
-      entryPoint: "https://idp.sso.tools/samlpro1258/saml/login/request",
-      issuer: "https://auth0-pp-iota.vercel.app/login/sso",
-      callbackUrl: "https://auth0-pp-iota.vercel.app/login/sso/cb",
-      cert: "MIIC/DCCAeSgAwIBAgIULf+7cqxFtfuyZRTkKbEMX/28MrIwDQYJKoZIhvcNAQEL\nBQAwODELMAkGA1UEBhMCR0IxEjAQBgNVBAoMCVNTTyBUb29sczEVMBMGA1UECwwM\nU0FNTCBQcm9qZWN0MB4XDTI2MTEwMzIzMjYxNVoXDTQ2MTAyOTIzMjYxNVowODEL\nMAkGA1UEBhMCR0IxEjAQBgNVBAoMCVNTTyBUb29sczEVMBMGA1UECwwMU0FNTCBQ\ncm9qZWN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu7ZiRt7G2m6k\n13vbCpJJXWcSRlPhtDtRGyTG4W2MSk5/OyS4bUUzJZ9SefxiaPGDHp8M4/11+3Ro\nu3dCxiOQTfBE7uh3GEigYJA5Zlj55D631pVdk21a7Y1Zp9q5KnyOJ4IJeXxHBV1d\nutNtYl8GYBr8V8TVTicIOi9jZb2q9AwnIZ0/dSB7BC3MbcngVmbRWX4AKFPJ9j7s\nHVfz1zMnMExaWgHwQR8Ucmh1T3MKp6Eooi/iqZyHUkXTeWhE+RN3KtiTL+ATAFWb\n8JPJhHWNF8b11xPpDGdSJaSxgs640od+nswMsb/O4XOBkfSjrMbAPP3l6bffAmts\npgUtbBjMjQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQAkYsw+cpcpvm8RAhPweBcR\nrtGk7OWu6XECiCYHhQdAIPFX8mKZT4YAp23sekg+IjHw+yzSXFJUtAQIqalWf1mz\nFZiKqrGzkus0GrDSYEW/LBggP7RnMvUXWg/ONjRY9EZU4mbLLCaMgHBN1/cgp7bz\nQ1EJFbKAlKZRtVU81UjmE04INGGHdP22FCF0wg/HiPUHzVDj6hils9BfkuFgnB03\ndLaAA54TZyPxKzW+wqn404/NP9XBx+1HWOq9Jh68Eo36CX2r+n+dbOEEvBx2euOV\nkDDZn8MY152JAhdry/hRmp+fzli80xoaOG7twTG9+4wVun3OAQyBdzyKcM1UFA2w",
-    },
-    (profile: any, verified: any) => {
-      verified(null, profile);
-    },
-  ),
+const strategy = new SAMLStrategy(
+  {
+    entryPoint: "https://idp.sso.tools/samlpro1258/saml/login/request",
+    issuer: "https://auth0-pp-iota.vercel.app/login/sso",
+    callbackUrl: "https://auth0-pp-iota.vercel.app/login/sso/cb",
+    cert: "MIIC/DCCAeSgAwIBAgIULf+7cqxFtfuyZRTkKbEMX/28MrIwDQYJKoZIhvcNAQEL\nBQAwODELMAkGA1UEBhMCR0IxEjAQBgNVBAoMCVNTTyBUb29sczEVMBMGA1UECwwM\nU0FNTCBQcm9qZWN0MB4XDTI2MTEwMzIzMjYxNVoXDTQ2MTAyOTIzMjYxNVowODEL\nMAkGA1UEBhMCR0IxEjAQBgNVBAoMCVNTTyBUb29sczEVMBMGA1UECwwMU0FNTCBQ\ncm9qZWN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu7ZiRt7G2m6k\n13vbCpJJXWcSRlPhtDtRGyTG4W2MSk5/OyS4bUUzJZ9SefxiaPGDHp8M4/11+3Ro\nu3dCxiOQTfBE7uh3GEigYJA5Zlj55D631pVdk21a7Y1Zp9q5KnyOJ4IJeXxHBV1d\nutNtYl8GYBr8V8TVTicIOi9jZb2q9AwnIZ0/dSB7BC3MbcngVmbRWX4AKFPJ9j7s\nHVfz1zMnMExaWgHwQR8Ucmh1T3MKp6Eooi/iqZyHUkXTeWhE+RN3KtiTL+ATAFWb\n8JPJhHWNF8b11xPpDGdSJaSxgs640od+nswMsb/O4XOBkfSjrMbAPP3l6bffAmts\npgUtbBjMjQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQAkYsw+cpcpvm8RAhPweBcR\nrtGk7OWu6XECiCYHhQdAIPFX8mKZT4YAp23sekg+IjHw+yzSXFJUtAQIqalWf1mz\nFZiKqrGzkus0GrDSYEW/LBggP7RnMvUXWg/ONjRY9EZU4mbLLCaMgHBN1/cgp7bz\nQ1EJFbKAlKZRtVU81UjmE04INGGHdP22FCF0wg/HiPUHzVDj6hils9BfkuFgnB03\ndLaAA54TZyPxKzW+wqn404/NP9XBx+1HWOq9Jh68Eo36CX2r+n+dbOEEvBx2euOV\nkDDZn8MY152JAhdry/hRmp+fzli80xoaOG7twTG9+4wVun3OAQyBdzyKcM1UFA2w",
+  },
+  (profile: any, verified: any) => {
+    verified(null, profile);
+  },
 );
+passport.use(strategy);
 
 passport.serializeUser(function (user, done) {
   done(null, user);
@@ -179,7 +178,7 @@ app.post(
 );
 
 app.get("/metadata", (req, res) => {
-  const metadata = SAMLStrategy.generateServiceProviderMetadata(null, null);
+  const metadata = strategy.generateServiceProviderMetadata(null, null);
   res.type("application/xml");
   res.status(200).send(metadata);
 });
