@@ -183,7 +183,7 @@ app.post(
     // );
 
     // const user = await response.json();
-    // console.log(req.user);
+    console.log(req.user);
     // res.status(200).render("home/index", req.user);
     res.redirect("/");
   },
