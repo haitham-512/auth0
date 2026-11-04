@@ -141,7 +141,16 @@ passport.deserializeUser(function (user: any, done) {
 
 /**************** App ****************/
 app.get("/", (req: Request, res: Response) => {
-  res.status(200).send("<h1>It's work!</h1>");
+  if (req.isAuthenticated()) {
+    const userProfile = req.user;
+
+    res.json({
+      message: "Successfully retrieved SAML profile",
+      profile: userProfile,
+    });
+  } else {
+    res.status(200).send("<h1>It's work!</h1>");
+  }
 });
 
 app.get("/login", (req: Request, res: Response) => {
